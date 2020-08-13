@@ -7,6 +7,9 @@ resource "aws_instance" "ec2_vault" {
   tags = {
     Name = "Vault Server ${format("%03d", count.index)}"
   }
+  provisioner "local-exec" {
+    command = "aws ec2 wait instance-status-ok --region ${regex("[a-z]+[^a-z][a-z]+[^a-z][0-9]+",self.availability_zone)} --instance-ids ${aws_instance.ec2_vault[count.index].id}"
+  }
   provisioner "file" {
     connection {
       type = "ssh"

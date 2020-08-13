@@ -7,6 +7,12 @@ resource "aws_instance" "awsqa_elb_spark" {
   tags = {
     Name = "AWSQA-ELB Spark Server ${format("%03d", count.index)}"
   }
+#  provisioner "local-exec" {     # I want to do this for each instance, but I get cycle errors from terraform
+#    command = "echo self.availability_zone=${self.availability_zone} && aws ec2 wait instance-status-ok --region ${regex("[a-z]+[^a-z][a-z]+[^a-z][0-9]+",self.availability_zone)} --instance-ids ${aws_instance.awsqa_elb_spark[count.index].id}"
+#  }
+  provisioner "local-exec" { # instead, we do this brain dead thing
+    command = "sleep 3m"
+  }
   provisioner "file" {
     connection {
       type = "ssh"

@@ -7,6 +7,9 @@ resource "aws_instance" "awsqa_spark" {
   tags = {
     Name = "AWSQA Spark Server ${format("%03d", count.index)}"
   }
+  provisioner "local-exec" {
+    command = "aws ec2 wait instance-status-ok --region ${regex("[a-z]+[^a-z][a-z]+[^a-z][0-9]+",self.availability_zone)} --instance-ids ${aws_instance.awsqa_spark[count.index].id}"
+  }
   provisioner "file" {
     connection {
       type = "ssh"
