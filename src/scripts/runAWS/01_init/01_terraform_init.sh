@@ -16,3 +16,8 @@ figlet -w 160 -f small "Init AWS-QA-ELB"
 cd ../../iac/terraform/awsqa_elb
 terraform init
 cd -
+
+figlet -w 160 -f small "Init AWS-QA-SWARM"
+cd ../../iac/terraform/awsqa_swarm
+terraform init
+cd -

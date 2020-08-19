@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-figlet -w 160 -f standard "Provision Vault"
+figlet -w 160 -f standard "Run Vault"
 
-figlet -w 160 -f small "Get Vault Secrets and Volumes from S3"
+figlet -w 160 -f small "Get Vault Files from S3"
 aws s3 cp s3://zipster-aws-on-demand-vault .vault_howardeiner  --recursive
 docker run --rm -v dockercompose_vault_files:/volume -v $PWD/.vault_howardeiner:/backup alpine sh -c "rm -rf /volume/* /volume/..?* /volume/.[!.]* ; tar -C /volume/ -xjf /backup/vault_files.tar.bz2"
 docker run --rm -v dockercompose_vault_logs:/volume -v $PWD/.vault_howardeiner:/backup alpine sh -c "rm -rf /volume/* /volume/..?* /volume/.[!.]* ; tar -C /volume/ -xjf /backup/vault_logs.tar.bz2"

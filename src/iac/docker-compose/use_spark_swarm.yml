@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  spark_service:
+    image: howarddeiner/zipster-aws-on-demand-spark
+    deploy:
+      replicas: 3 # number of containers in total on mesh
+      placement:
+        max_replicas_per_node: 1
+#      update_config:
+#        parallelism: 1 # one container per node
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "8080:8080"
+    environment:
+      VAULT_TOKEN: $VAULT_TOKEN
+      VAULT_ADDRESS: $VAULT_ADDRESS
+      ENVIRONMENT: $ENVIRONMENT
+    networks:
+      - overlay
+#    healthcheck:
+#      test:  "curl http://localhost:8080/zipster -d '{\"zipcode\":\"07440\",\"radius\":\"2\"}'"
+#      interval: 1m30s
+#      timeout: 10s
+#      retries: 3
+
+networks:
+  overlay:

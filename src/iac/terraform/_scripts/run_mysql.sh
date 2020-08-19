@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+figlet -w 160 -f standard "Run MySQL"
 
 figlet -w 160 -f small "Get Vault Connection"
 export ENVIRONMENT=$(<.environment)

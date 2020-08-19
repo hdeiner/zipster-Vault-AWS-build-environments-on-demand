@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+figlet -w 160 -f standard "Run Spark"
 
 figlet -w 160 -f small "Get Vault Connection"
 export ENVIRONMENT=$(<.environment)
@@ -10,16 +11,19 @@ vault login -address=$VAULT_ADDRESS $VAULT_TOKEN > /dev/null
 
 figlet -w 160 -f small "Get MYSQL Instance Connection"
 while true ; do
-  export MYSQL_STATUS=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/MYSQL | grep -E 'status[ ]*.' | awk '{print $2}'`
+  export MYSQL_STATUS=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/MYSQL | grep -E '^status[ ]*.' | awk '{print $2}'`
   if [ $MYSQL_STATUS == 'running' ] ; then
-    echo "MySQL is running on "$MYSQL_DNS_NAME
+    echo "MySQL is running"
     break
   fi
   sleep 5
 done
-export MYSQL_DNS_NAME=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/MYSQL | grep -E 'address[ ]*.' | awk '{print $2}'`
-export MYSQL_USER=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/MYSQL | grep -E 'user[ ]*.' | awk '{print $2}'`
-export MYSQL_PASSWORD=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/MYSQL | grep -E 'password[ ]*.' | awk '{print $2}'`
+export MYSQL_DNS_NAME=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/MYSQL | grep -E '^address[ ]*.' | awk '{print $2}'`
+echo "MySQL is running on "$MYSQL_DNS_NAME
+export MYSQL_USER=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/MYSQL | grep -E '^user[ ]*.' | awk '{print $2}'`
+echo "MySQL user is "$MYSQL_USER
+export MYSQL_PASSWORD=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/MYSQL | grep -E '^password[ ]*.' | awk '{print $2}'`
+echo "MySQL password is "$MYSQL_PASSWORD
 
 figlet -w 160 -f small "Bring up Local Spark Container"
 docker-compose -f src/iac/docker-compose/use_spark.yml up -d

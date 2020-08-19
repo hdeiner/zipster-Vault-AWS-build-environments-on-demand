@@ -18,11 +18,11 @@ export VAULT_TOKEN=$(<.vault_howardeiner/root_token)
 echo "VAULT_TOKEN is "$VAULT_TOKEN
 vault login -address=$VAULT_ADDRESS $VAULT_TOKEN > /dev/null
 
-export MYSQL_DNS_NAME=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/MYSQL | grep -E 'address[ ]*.' | awk '{print $2}'`
+export MYSQL_DNS_NAME=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/MYSQL | grep -E '^address[ ]*.' | awk '{print $2}'`
 echo "MYSQL_DNS_NAME is "$MYSQL_DNS_NAME
-export MYSQL_USER=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/MYSQL | grep -E 'user[ ]*.' | awk '{print $2}'`
+export MYSQL_USER=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/MYSQL | grep -E '^user[ ]*.' | awk '{print $2}'`
 echo "MYSQL_USER is "$MYSQL_USER
-export MYSQL_PASSWORD=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/MYSQL | grep -E 'password[ ]*.' | awk '{print $2}'`
+export MYSQL_PASSWORD=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/MYSQL | grep -E '^password[ ]*.' | awk '{print $2}'`
 echo "MYSQL_PASSWORD is "$MYSQL_PASSWORD
 
 export SPARK_DNS_NAME=$(echo `cat ../../iac/terraform/awsqa_elb/.spark_elb_dns`)
