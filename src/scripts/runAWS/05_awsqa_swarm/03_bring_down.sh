@@ -20,6 +20,8 @@ for path in $(vault kv list -address=$VAULT_ADDRESS ENVIRONMENTS/AWS-QA-SWARM/ |
     vault kv delete -address=$VAULT_ADDRESS ENVIRONMENTS/AWS-QA-SWARM/${path};
   done
 
+rm -rf .vault_howardeiner/root_token
+
 figlet -w 160 -f small "UnTerraform AWS-QA-SWARM"
 cd ../../iac/terraform/awsqa_swarm
 terraform destroy -var environment=AWS-QA-SWARM -auto-approve

@@ -12,7 +12,7 @@ vault login -address=$VAULT_ADDRESS $VAULT_TOKEN > /dev/null
 
 export SPARK_DNS_NAME=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/SPARK | grep -E '^address[ ]*.' | awk '{print $2}'`
 
-TEST_COMMAND="curl http://"$SPARK_DNS_NAME":8080/zipster -d '{\"zipcode\":\"07440\","radius":\"2\"}'"
+TEST_COMMAND="curl -X GET 'http://"$SPARK_DNS_NAME":8080/zipster?zipcode=07440&radius=2'"
 echo $TEST_COMMAND
 eval $TEST_COMMAND
 

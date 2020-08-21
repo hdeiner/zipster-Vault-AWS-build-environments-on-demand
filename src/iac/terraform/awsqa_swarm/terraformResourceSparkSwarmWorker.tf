@@ -13,6 +13,17 @@ resource "aws_instance" "awsqa_swarm_spark_swarm_worker" {
   provisioner "local-exec" { # instead, we do this brain dead thing
     command = "sleep 3m"
   }
+  provisioner "remote-exec" {
+    connection {
+      type = "ssh"
+      user = "ubuntu"
+      host = self.public_dns
+      private_key = file("~/.ssh/id_rsa")
+    }
+    inline = [
+      "sudo hostname worker-${format("%03d",count.index)}"
+    ]
+  }
   provisioner "file" {
     connection {
       type = "ssh"
@@ -112,4 +123,3 @@ resource "aws_instance" "awsqa_swarm_spark_swarm_worker" {
     ]
   }
 }
-

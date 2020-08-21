@@ -45,8 +45,9 @@ echo "SPARK_SWARM_MANAGER_JOIN_TOKEN is "$SPARK_SWARM_MANAGER_JOIN_TOKEN
 figlet -w 160 -f small "Make this a Docker Swarm Worker Node"
 docker swarm leave --force
 docker swarm join --token $SPARK_SWARM_MANAGER_JOIN_TOKEN $SPARK_SWARM_MANAGER_IP:2377
-#docker node ls | grep  -oE "\S*\s*\S*\s*`hostname`" | cut -d" " -f1 > .my_node
-#docker node demote `cat .my_node`
+docker node ls | grep  -oE "\S*\s*\S*\s*`hostname`" | cut -d" " -f1 > .my_node
+docker node update --label-add function=spark-worker `cat .my_node`
+docker node demote `cat .my_node`
 
 figlet -w 160 -f small "Set Swarm Worker status in Vault"
 echo `hostname` > .hostname

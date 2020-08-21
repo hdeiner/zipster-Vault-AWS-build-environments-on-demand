@@ -35,17 +35,20 @@ docker swarm init --advertise-addr $DOCKER_SWARM_IP
 figlet -w 160 -f small "Get Cluster Join Tokens"
 docker swarm join-token manager | grep  -oE "\s+docker\s+swarm\s+join\s+\-\-token\s*\S*" | cut -d" " -f9 > /home/ubuntu/.join-token
 
-figlet -w 160 -f small "Allow cluster to warm up"
-sleep 3m
+#figlet -w 160 -f small "Allow cluster to warm up"
+#sleep 3m
 
 figlet -w 160 -f small "Set Swarm Join Tokens in Vault"
 vault kv put -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/SPARK_SWARM_MANAGER address=$DOCKER_SWARM_DNS_NAME ip=$DOCKER_SWARM_IP join-token=`cat /home/ubuntu/.join-token` status=started
 
 figlet -w 160 -f small "Wait for swarm workers to join"
-sleep 3m
+sleep 1m
 
 figlet -w 160 -f small "Deploy Spark Application to swarm"
 env VAULT_TOKEN=$VAULT_TOKEN VAULT_ADDRESS=$VAULT_ADDRESS ENVIRONMENT=$ENVIRONMENT MYSQL_DNS_NAME=$MYSQL_DNS_NAME MYSQL_USER=$MYSQL_USER MYSQL_PASSWORD=$MYSQL_PASSWORD docker stack deploy --compose-file use_spark_swarm.yml spark_swarm
+
+figlet -w 160 -f small "Publish 8080 port to swarm workers"
+docker service update --publish-add published=8080,target=8080 spark_swarm_spark_service
 
 #figlet -w 160 -f small "Make this node manager only"
 #docker node ls | grep  -oE "\S+\s\*" | cut -d" " -f1 > /home/ubuntu/.manager_node
