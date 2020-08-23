@@ -7,8 +7,8 @@ services:
       replicas: 2 # number of containers in total on mesh
       placement:
         max_replicas_per_node: 1
-##REMOVE##        constraints:
-##REMOVE##          - "node.labels.function==spark-worker"
+        constraints:
+          - "node.labels.function==spark-worker"
       #      update_config:
       #        parallelism: 1 # one container per node
       restart_policy:

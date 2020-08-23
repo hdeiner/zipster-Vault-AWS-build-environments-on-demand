@@ -41,10 +41,13 @@ export SPARK_SWARM_MANAGER_IP=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS
 echo "SPARK_SWARM_MANAGER is on "$SPARK_SWARM_MANAGER_IP
 export SPARK_SWARM_MANAGER_JOIN_TOKEN=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/SPARK_SWARM_MANAGER | grep -E '^join-token[ ]*.' | awk '{print $2}'`
 echo "SPARK_SWARM_MANAGER_JOIN_TOKEN is "$SPARK_SWARM_MANAGER_JOIN_TOKEN
+export DOCKER_SWARM_IP="`wget -q -O - http://169.254.169.254/latest/meta-data/public-ipv4 || die \"wget public-ipv4 has failed: $?\"`"
+test -n "DOCKER_SWARM_IP" || die 'cannot obtain public-ipv4'
+echo "DOCKER_SWARM_IP="$DOCKER_SWARM_IP
 
 figlet -w 160 -f small "Make this a Docker Swarm Worker Node"
 docker swarm leave --force
-docker swarm join --token $SPARK_SWARM_MANAGER_JOIN_TOKEN $SPARK_SWARM_MANAGER_IP:2377
+docker swarm join --token $SPARK_SWARM_MANAGER_JOIN_TOKEN $SPARK_SWARM_MANAGER_IP:2377 --advertise-addr $DOCKER_SWARM_IP
 docker node ls | grep  -oE "\S*\s*\S*\s*`hostname`" | cut -d" " -f1 > .my_node
 docker node update --label-add function=spark-worker `cat .my_node`
 docker node demote `cat .my_node`

@@ -44,15 +44,15 @@ vault kv put -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/SPARK_SWARM_MANAG
 figlet -w 160 -f small "Wait for swarm workers to join"
 sleep 1m
 
+figlet -w 160 -f small "Make this node manager only"
+docker node ls | grep  -oE "\S+\s\*" | cut -d" " -f1 > /home/ubuntu/.manager_node
+docker node update --availability drain `cat /home/ubuntu/.manager_node`
+
 figlet -w 160 -f small "Deploy Spark Application to swarm"
 env VAULT_TOKEN=$VAULT_TOKEN VAULT_ADDRESS=$VAULT_ADDRESS ENVIRONMENT=$ENVIRONMENT MYSQL_DNS_NAME=$MYSQL_DNS_NAME MYSQL_USER=$MYSQL_USER MYSQL_PASSWORD=$MYSQL_PASSWORD docker stack deploy --compose-file use_spark_swarm.yml spark_swarm
 
 figlet -w 160 -f small "Publish 8080 port to swarm workers"
 docker service update --publish-add published=8080,target=8080 spark_swarm_spark_service
-
-#figlet -w 160 -f small "Make this node manager only"
-#docker node ls | grep  -oE "\S+\s\*" | cut -d" " -f1 > /home/ubuntu/.manager_node
-#docker node update --availability drain `cat /home/ubuntu/.manager_node`
 
 #figlet -w 160 -f small "Wait for Spark to start"
 #while true ; do

@@ -42,6 +42,14 @@ resource "aws_security_group" "awsqa_swarm_swarm_manager" {
     ]
   }
   ingress { # overlay network traffic
+    protocol  = "tcp"
+    from_port = 4789
+    to_port   = 4789
+    cidr_blocks = [
+      "0.0.0.0/0",
+    ]
+  }
+  ingress { # overlay network traffic
     protocol  = "udp"
     from_port = 4789
     to_port   = 4789
