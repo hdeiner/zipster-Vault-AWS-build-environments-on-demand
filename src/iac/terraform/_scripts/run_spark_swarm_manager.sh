@@ -54,16 +54,16 @@ env VAULT_TOKEN=$VAULT_TOKEN VAULT_ADDRESS=$VAULT_ADDRESS ENVIRONMENT=$ENVIRONME
 figlet -w 160 -f small "Publish 8080 port to swarm workers"
 docker service update --publish-add published=8080,target=8080 spark_swarm_spark_service
 
-#figlet -w 160 -f small "Wait for Spark to start"
-#while true ; do
-#  result=$(curl http://localhost:8080/zipster -d '{"radius":"2.0", "zipcode":"07440"}' 2>&1 | grep -E "NA-US-NJ-WAYNE" | wc -l)
-#  if [ $result != 0 ] ; then
-#    echo "Spark Swarm is started"
-#    break
-#  fi
-#  echo "Waiting for Spark Swarm to start"
-#  sleep 5
-#done
+figlet -w 160 -f small "Wait for Spark to start"
+while true ; do
+  result=$(curl http://localhost:8080/zipster -d '{"radius":"2.0", "zipcode":"07440"}' 2>&1 | grep -E "NA-US-NJ-WAYNE" | wc -l)
+  if [ $result != 0 ] ; then
+    echo "Spark Swarm is started"
+    break
+  fi
+  echo "Waiting for Spark Swarm to start"
+  sleep 5
+done
 
 figlet -w 160 -f small "Update Vault for swarm manager running"
 vault kv put -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/SPARK_SWARM_MANAGER address=$DOCKER_SWARM_DNS_NAME ip=$DOCKER_SWARM_IP join-token=`cat /home/ubuntu/.join-token` status=running
