@@ -17,6 +17,30 @@ resource "aws_security_group" "awsqa_swarm_swarm_manager" {
       "0.0.0.0/0",
     ]
   }
+  ingress {  # portainer website
+    protocol  = "tcp"
+    from_port = 8000
+    to_port   = 8000
+    cidr_blocks = [
+      "0.0.0.0/0",
+    ]
+  }
+  ingress {  # portainer website
+    protocol  = "tcp"
+    from_port = 9000
+    to_port   = 9000
+    cidr_blocks = [
+      "0.0.0.0/0",
+    ]
+  }
+  ingress { # portainer agent
+    protocol  = "tcp"
+    from_port = 9001
+    to_port   = 9001
+    cidr_blocks = [
+      "0.0.0.0/0",
+    ]
+  }
   ingress { # cluster management communications
     protocol  = "tcp"
     from_port = 2377

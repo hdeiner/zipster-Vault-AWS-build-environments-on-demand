@@ -9,12 +9,11 @@ services:
         max_replicas_per_node: 1
         constraints:
           - "node.labels.function==spark-worker"
-      #      update_config:
-      #        parallelism: 1 # one container per node
+      update_config:
+        parallelism: 1 # one container per node
       restart_policy:
         condition: on-failure
     ports:
-#      - "8080:8080"
       - target: 8080
         published: 8080
         protocol: tcp
@@ -26,7 +25,7 @@ services:
     networks:
       - overlay
 #    healthcheck:
-#      test:  "curl http://localhost:8080/zipster -d '{\"zipcode\":\"07440\",\"radius\":\"2\"}'"
+#      test:  "curl http://localhost:8080/zipster -d '{\"zipcode\":\"07440\",\"radius\":\"1.5\"}'"
 #      interval: 1m30s
 #      timeout: 10s
 #      retries: 3

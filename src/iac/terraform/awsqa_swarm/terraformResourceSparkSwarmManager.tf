@@ -130,6 +130,16 @@ resource "aws_instance" "awsqa_swarm_spark_swarm_manager" {
       host = self.public_dns
       private_key = file("~/.ssh/id_rsa")
     }
+    source = "../../docker-compose/use_portainer_swarm.yml"
+    destination = "/home/ubuntu/use_portainer_swarm.yml"
+  }
+  provisioner "file" {
+    connection {
+      type = "ssh"
+      user = "ubuntu"
+      host = self.public_dns
+      private_key = file("~/.ssh/id_rsa")
+    }
     source = "../_scripts/run_spark_swarm_manager.sh"
     destination = "/home/ubuntu/run_spark_swarm_manager.sh"
   }
