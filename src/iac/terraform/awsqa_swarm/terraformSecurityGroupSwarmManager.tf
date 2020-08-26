@@ -41,6 +41,54 @@ resource "aws_security_group" "awsqa_swarm_swarm_manager" {
       "0.0.0.0/0",
     ]
   }
+  ingress { # prometheus
+    protocol  = "tcp"
+    from_port = 9090
+    to_port   = 9090
+    cidr_blocks = [
+      "0.0.0.0/0",
+    ]
+  }
+  ingress { # prometheus node exporter
+    protocol  = "tcp"
+    from_port = 9100
+    to_port   = 9100
+    cidr_blocks = [
+      "0.0.0.0/0",
+    ]
+  }
+  ingress { # prometheus alert manager
+    protocol  = "tcp"
+    from_port = 9093
+    to_port   = 9093
+    cidr_blocks = [
+      "0.0.0.0/0",
+    ]
+  }
+  ingress { # prometheus alert manager
+    protocol  = "tcp"
+    from_port = 9093
+    to_port   = 9093
+    cidr_blocks = [
+      "0.0.0.0/0",
+    ]
+  }
+  ingress { # cadvisor
+    protocol  = "tcp"
+    from_port = 8088
+    to_port   = 8088
+    cidr_blocks = [
+      "0.0.0.0/0",
+    ]
+  }
+  ingress { # grafana
+    protocol  = "tcp"
+    from_port = 3000
+    to_port   = 3000
+    cidr_blocks = [
+      "0.0.0.0/0",
+    ]
+  }
   ingress { # cluster management communications
     protocol  = "tcp"
     from_port = 2377

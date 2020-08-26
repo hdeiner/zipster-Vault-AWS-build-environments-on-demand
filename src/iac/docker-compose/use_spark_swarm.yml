@@ -26,8 +26,8 @@ services:
       - overlay
 #    healthcheck:
 #      test:  "curl http://localhost:8080/zipster -d '{\"zipcode\":\"07440\",\"radius\":\"1.5\"}'"
-#      interval: 1m30s
-#      timeout: 10s
+#      interval: 2m30s
+#      timeout: 15s
 #      retries: 3
 
 networks:
