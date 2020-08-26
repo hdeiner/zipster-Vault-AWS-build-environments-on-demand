@@ -1,4 +1,4 @@
-### Building in Docker Containers, testing locally, and buulding AWS Environments on demand (both single instance and clustered).
+### Building in Docker Containers, testing locally, and building AWS Environments on demand (single instance, elastic load balanced, and Docker Swarmed).
 
 ##### Concept
 Why do we use Docker Containers, anyway?  We want to be able to create environments, anything from simple short lived and test isolated environments and right through to production, using the same easy to follow techniques that reduce risk that deployments will go bad.  We reduce this risk by making deployments (even deployment environments) an everyday occurance, and testing frequently.
