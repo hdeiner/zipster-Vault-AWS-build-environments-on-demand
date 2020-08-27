@@ -164,11 +164,6 @@ Test\
 <BR />\
 Test - Look at Manager Node\
 ![runAWS_05_awsqa_swarm_02_test_manager_node_01](assets/runAWS_05_awsqa_swarm_02_test_manager_node_01.png)\
-![runAWS_05_awsqa_swarm_02_test_manager_node_02](assets/runAWS_05_awsqa_swarm_02_test_manager_node_02.png)\
-![runAWS_05_awsqa_swarm_02_test_manager_node_03](assets/runAWS_05_awsqa_swarm_02_test_manager_node_03.png)\
-![runAWS_05_awsqa_swarm_02_test_manager_node_04](assets/runAWS_05_awsqa_swarm_02_test_manager_node_04.png)\
-![runAWS_05_awsqa_swarm_02_test_manager_node_06](assets/runAWS_05_awsqa_swarm_02_test_manager_node_05.png)\
-![runAWS_05_awsqa_swarm_02_test_manager_node_06](assets/runAWS_05_awsqa_swarm_02_test_manager_node_06.png)\
 <BR />\
 Test - Look at Portainer\
 ![runAWS_05_awsqa_swarm_02_test_portainer_01](assets/runAWS_05_awsqa_swarm_02_test_portainer_01.png)\
