@@ -22,11 +22,15 @@ export MYSQL_DNS_NAME=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRO
 export MYSQL_USER=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/MYSQL | grep -E '^user[ ]*.' | awk '{print $2}'`
 export MYSQL_PASSWORD=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/MYSQL | grep -E '^password[ ]*.' | awk '{print $2}'`
 
+figlet -w 160 -f small "Set Swarm Worker status to ready in Vault"
+echo `hostname` > .hostname
+vault kv put -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/SPARK_SWARM_WORKER/`cat .hostname` status=ready
+
 figlet -w 160 -f small "Get SPARK_SWARM_MANAGER Connection"
 while true ; do
   export SPARK_SWARM_MANAGER_STATUS=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/SPARK_SWARM_MANAGER | grep -E '^status[ ]*.' | awk '{print $2}'`
-  if [ $SPARK_SWARM_MANAGER_STATUS == 'started' ] ; then
-    echo "SPARK_SWARM_MANAGER is started"
+  if [ $SPARK_SWARM_MANAGER_STATUS == 'ready' ] ; then
+    echo "SPARK_SWARM_MANAGER is ready"
     break
   fi
   if [ $SPARK_SWARM_MANAGER_STATUS == 'running' ] ; then
@@ -52,6 +56,5 @@ docker node ls | grep  -oE "\S*\s*\S*\s*`hostname`" | cut -d" " -f1 > .my_node
 docker node update --label-add function=spark-worker `cat .my_node`
 docker node demote `cat .my_node`
 
-figlet -w 160 -f small "Set Swarm Worker status in Vault"
-echo `hostname` > .hostname
+figlet -w 160 -f small "Set Swarm Worker status to joined in Vault"
 vault kv put -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/SPARK_SWARM_WORKER/`cat .hostname` status=joined spark_swarm_manager=`echo $SPARK_SWARM_MANAGER_IP:2377`

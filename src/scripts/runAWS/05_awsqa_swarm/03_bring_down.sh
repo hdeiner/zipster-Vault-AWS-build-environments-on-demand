@@ -25,7 +25,7 @@ rm -rf .vault_howardeiner/root_token
 figlet -w 160 -f small "UnTerraform AWS-QA-SWARM"
 cd ../../iac/terraform/awsqa_swarm
 terraform destroy -var environment=AWS-QA-SWARM -auto-approve
-rm -rf .environment .mysql_dns .spark_dns .spark_elb_dns .inital_swarm_worker_count .spark_swarm_manager_dns
+rm -rf .environment .mysql_dns .spark_dns .spark_elb_dns .spark_swarm_manager_dns
 cd -
 
 

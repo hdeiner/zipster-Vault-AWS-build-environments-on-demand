@@ -38,10 +38,38 @@ figlet -w 160 -f small "Get Cluster Join Tokens"
 docker swarm join-token manager | grep  -oE "\s+docker\s+swarm\s+join\s+\-\-token\s*\S*" | cut -d" " -f9 > /home/ubuntu/.join-token
 
 figlet -w 160 -f small "Set Swarm Join Tokens in Vault"
-vault kv put -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/SPARK_SWARM_MANAGER address=$DOCKER_SWARM_DNS_NAME ip=$DOCKER_SWARM_IP join-token=`cat /home/ubuntu/.join-token` status=started
+vault kv put -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/SPARK_SWARM_MANAGER address=$DOCKER_SWARM_DNS_NAME ip=$DOCKER_SWARM_IP join-token=`cat /home/ubuntu/.join-token` status=ready
 
 figlet -w 160 -f small "Wait for swarm workers to join"
-sleep 1m
+export AWS_REGION=`curl http://169.254.169.254/latest/dynamic/instance-identity/document|grep region|awk -F\" '{print $4}'`
+echo AWS_REGION=$AWS_REGION
+export SWARM_WORKER_COUNT=`expr $(aws ec2 describe-instances --region $AWS_REGION --filters "Name=tag:Name,Values=AWSQA-SWARM Spark Swarm Worker*" "Name=instance-state-name,Values=running" --query "Reservations[].Instances[].InstanceId" | wc -l) - 2` # don't count []
+echo SWARM_WORKER_COUNT=$SWARM_WORKER_COUNT
+while true;
+ do
+    export VAULT_SWARM_WORKER_COUNT=$(vault kv list -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/SPARK_SWARM_WORKER/ | tail -n+3 | wc -l)
+    if [ $VAULT_SWARM_WORKER_COUNT == $SWARM_WORKER_COUNT ]
+    then
+      break
+    else
+      echo "Waiting for ENVIRONMENTS/$ENVIRONMENT/SPARK_SWARM_WORKER/ to have $SWARM_WORKER_COUNT instances (has $VAULT_SWARM_WORKER_COUNT now)"
+    fi
+    sleep 5
+  done
+for path in $(vault kv list -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/SPARK_SWARM_WORKER/ | tail -n+3);
+  do
+    echo evaluate ENVIRONMENTS/$ENVIRONMENT/SPARK_SWARM_WORKER/${path}
+    export VAULT_SWARM_WORKER_STATUS=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT//SPARK_SWARM_WORKER/${path} | grep -E '^status[ ]*.' | awk '{print $2}'`
+    if [ $VAULT_SWARM_WORKER_STATUS == 'ready' ] ; then
+      echo "ENVIRONMENTS/$ENVIRONMENT/SPARK_SWARM_WORKER/${path} is ready"
+      break
+    fi
+    if [ $VAULT_SWARM_WORKER_STATUS == 'joined' ] ; then
+      echo "ENVIRONMENTS/$ENVIRONMENT/SPARK_SWARM_WORKER/${path} is joined"
+      break
+    fi
+    sleep 5
+  done
 
 #figlet -w 160 -f small "Make this node manager only"
 #docker node ls | grep  -oE "\S+\s\*" | cut -d" " -f1 > /home/ubuntu/.manager_node

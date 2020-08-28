@@ -51,20 +51,6 @@ resource "aws_instance" "awsqa_swarm_spark_swarm_manager" {
   }
 
   provisioner "local-exec" {
-    command = "echo aws_instance.awsqa_swarm_spark_swarm_worker[count.index].count > .inital_swarm_worker_count"
-  }
-  provisioner "file" {
-    connection {
-      type = "ssh"
-      user = "ubuntu"
-      host = self.public_dns
-      private_key = file("~/.ssh/id_rsa")
-    }
-    source = ".inital_swarm_worker_count"
-    destination = "/home/ubuntu/.inital_swarm_worker_count"
-  }
-
-  provisioner "local-exec" {
     command = "echo ${var.environment} > .environment"
   }
   provisioner "file" {
