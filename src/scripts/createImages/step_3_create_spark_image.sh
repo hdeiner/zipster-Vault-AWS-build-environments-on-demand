@@ -4,8 +4,8 @@ figlet -w 160 -f standard "Create Spark Image"
 
 figlet -w 160 -f small "Build Zipster"
 cd ../../..
-mvn -q clean compile
-cp target/zipster-1.0-SNAPSHOT-jar-with-dependencies.jar src/iac/docker/spark/.
+mvn -q -f pom-non-lambda.xml clean compile package
+cp target/zipster-1.0-SNAPSHOT.jar src/iac/docker/spark/.
 cd -
 
 figlet -w 160 -f small "Bring up Local Spark Container"
@@ -23,7 +23,7 @@ docker-compose -f ../../iac/docker-compose/create_spark.yml down
 
 figlet -w 160 -f small "Cleanup"
 cd ../../..
-mvn -q clean
+mvn -q -f pom-non-lambda.xml clean
 cd -
 docker rmi -f dockercompose_spark_service
-rm ../../iac/docker/spark/zipster-1.0-SNAPSHOT-jar-with-dependencies.jar
+rm ../../iac/docker/spark/zipster-1.0-SNAPSHOT.jar

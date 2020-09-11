@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-figlet -w 170 -f standard "Bring Down AWS-QA-ELB Environment"
-export ENVIRONMENT=AWS-QA-ELB
+figlet -w 170 -f standard "Bring Down AWSQA-ELB Environment"
+export ENVIRONMENT=AWSQA-ELB
 
 figlet -w 160 -f small "Remove ENVIRONMENT from Vault"
 export VAULT_ADDRESS="http://"$(<../../iac/terraform/vault/.vault_dns)":8200"
@@ -17,8 +17,8 @@ for path in $(vault kv list -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRONMENT/ |
 
 rm -rf .vault_howardeiner/root_token
 
-figlet -w 160 -f small "UnTerraform AWS-QA-ELB"
+figlet -w 160 -f small "UnTerraform AWSQA-ELB"
 cd ../../iac/terraform/awsqa_elb
-terraform destroy -var environment=AWS-QA-ELB -auto-approve
+terraform destroy -var environment=AWSQA-ELB -auto-approve
 rm -rf .environment .mysql_dns .spark_dns .spark_elb_dns
 cd -

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-figlet -w 160 -f standard "Bring Up AWS-QA Environment"
+figlet -w 160 -f standard "Bring Up AWSQA Environment"
 
-export ENVIRONMENT=AWS-QA
+export ENVIRONMENT=AWSQA
 
-figlet -w 160 -f small "Terraform AWS-QA Environment"
+figlet -w 160 -f small "Terraform AWSQA Environment"
 cd ../../iac/terraform/awsqa
 terraform apply -var environment=$ENVIRONMENT -auto-approve
 echo `terraform output spark_dns | grep -o '".*"' | cut -d '"' -f2` > .spark_dns

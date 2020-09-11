@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-figlet -w 200 -f standard "Bring Up AWS-QA-SWARM Environment"
+figlet -w 200 -f standard "Bring Up AWSQA-SWARM Environment"
 
-export ENVIRONMENT=AWS-QA-SWARM
+export ENVIRONMENT=AWSQA-SWARM
 
-figlet -w 200 -f small "Terraform AWS-QA-SWARM Environment"
+figlet -w 200 -f small "Terraform AWSQA-SWARM Environment"
 cd ../../iac/docker-compose/artifacts/swarmprom
 tar -zcf /tmp/swarmprom.tar .
 cd -

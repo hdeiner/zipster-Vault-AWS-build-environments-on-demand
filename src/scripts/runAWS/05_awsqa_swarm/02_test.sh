@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-figlet -w 200 -f standard "Test in AWS-QA-SWARM Environment"
+figlet -w 200 -f standard "Test in AWSQA-SWARM Environment"
 
-export ENVIRONMENT=AWS-QA-SWARM
+export ENVIRONMENT=AWSQA-SWARM
 
 export VAULT_ADDRESS="http://"$(<../../iac/terraform/vault/.vault_dns)":8200"
 mkdir .vault_howardeiner
@@ -15,5 +15,6 @@ export SPARK_DNS_NAME=`vault kv get -address=$VAULT_ADDRESS ENVIRONMENTS/$ENVIRO
 TEST_COMMAND="curl -X GET 'http://"$SPARK_DNS_NAME":8080/zipster?zipcode=07440&radius=2'"
 echo $TEST_COMMAND
 eval $TEST_COMMAND
+echo ""
 
 rm -rf .vault_howardeiner

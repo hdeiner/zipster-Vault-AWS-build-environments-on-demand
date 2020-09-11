@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-figlet -w 160 -f standard "Bring Up AWS-QA-ELB Environment"
+figlet -w 160 -f standard "Bring Up AWSQA-ELB Environment"
 
-export ENVIRONMENT=AWS-QA-ELB
+export ENVIRONMENT=AWSQA-ELB
 
-figlet -w 160 -f small "Terraform AWS-QA-ELB Environment"
+figlet -w 160 -f small "Terraform AWSQA-ELB Environment"
 cd ../../iac/terraform/awsqa_elb
 terraform apply -var environment=$ENVIRONMENT -auto-approve
 echo `terraform output spark_elb_dns | grep -o '".*"' | cut -d '"' -f2` > .spark_elb_dns
