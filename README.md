@@ -1,4 +1,10 @@
-### Building in Docker Containers, testing locally, and building AWS Environments on demand (single instance, elastic load balanced, and Docker Swarmed).
+### Building in Docker Containers, testing locally, and building AWS Environments.
+<ul>
+<li>Single AWS EC2 instances for MySQL and SPARK</li>
+<li>AWS EC2 instance for MySQL, multiple AWS EC2 instances for SPARK, AWS ELB for load balancing</li>
+<li>AWS EC2 instance for MySQL, AWS EC2 instance for Docker Swarm Manager for load balancing, multiple AWS EC2 instances for Docker Swarm Workers</li>
+<li>AWS EC2 instance for MySQL, AWS Lambda for care free load balancing</li>
+</ul>
 
 ##### Concept
 Why do we use Docker Containers, anyway?  We want to be able to create environments, anything from simple short lived and test isolated environments and right through to production, using the same easy to follow techniques that reduce risk that deployments will go bad.  We reduce this risk by making deployments (even deployment environments) an everyday occurance, and testing frequently.
