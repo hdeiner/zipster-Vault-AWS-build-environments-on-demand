@@ -1,10 +1,10 @@
-package main.java.com.deinersoft.zipster;
+package com.deinersoft.zipster;
 
 import com.bettercloud.vault.Vault;
 import com.bettercloud.vault.VaultConfig;
 import com.bettercloud.vault.VaultException;
 import org.json.JSONObject;
-import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

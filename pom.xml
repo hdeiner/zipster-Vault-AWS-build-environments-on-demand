@@ -68,9 +68,9 @@
             <version>8.0.18</version>
         </dependency>
         <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.11</version>
         </dependency>
     </dependencies>
 
@@ -117,7 +117,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>main.java.com.deinersoft.zipster.ZipsterServer</mainClass>
+                            <mainClass>com.deinersoft.zipster.ZipsterServer</mainClass>
                             <classpathPrefix>dependency-jars</classpathPrefix>
                         </manifest>
                     </archive>

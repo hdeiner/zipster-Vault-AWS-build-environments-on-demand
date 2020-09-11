@@ -1,4 +1,4 @@
-package main.java.com.deinersoft.zipster;
+package com.deinersoft.zipster;
 
 import org.json.JSONObject;
 import static spark.Spark.*;

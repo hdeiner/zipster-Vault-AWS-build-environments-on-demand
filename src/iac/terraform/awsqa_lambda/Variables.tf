@@ -25,7 +25,7 @@ variable "lambda_payload_filename" {
 }
 
 variable "lambda_function_handler" {
-  default = "main.java.com.deinersoft.zipster.APIRequestHandler"
+  default = "com.deinersoft.zipster.APIRequestHandler"
 }
 
 variable "lambda_runtime" {

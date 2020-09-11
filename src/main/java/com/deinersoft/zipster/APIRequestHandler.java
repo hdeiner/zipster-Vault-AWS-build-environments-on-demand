@@ -1,4 +1,4 @@
-package main.java.com.deinersoft.zipster;
+package com.deinersoft.zipster;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
